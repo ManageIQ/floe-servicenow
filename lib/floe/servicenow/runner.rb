@@ -6,8 +6,9 @@ module Floe
       SCHEME        = "servicenow"
       SCHEME_PREFIX = "#{SCHEME}://".freeze
       API_CLASSES   = {
-        "cmdb"  => Cmdb,
-        "table" => Table
+        "cmdb"     => Cmdb,
+        "table"    => Table,
+        "incident" => Incident
       }.freeze
 
       def run_async!(resource, params, secrets, context)
