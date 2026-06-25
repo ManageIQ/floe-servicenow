@@ -6,6 +6,7 @@ module Floe
       SCHEME        = "servicenow"
       SCHEME_PREFIX = "#{SCHEME}://".freeze
       API_CLASSES   = {
+        "cmdb"  => Cmdb,
         "table" => Table
       }.freeze
 
