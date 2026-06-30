@@ -5,7 +5,11 @@ module Floe
     class Runner < Floe::BuiltinRunner::Runner
       SCHEME        = "servicenow"
       SCHEME_PREFIX = "#{SCHEME}://".freeze
-      API_CLASSES   = {}.freeze
+      API_CLASSES   = {
+        "cmdb"     => Cmdb,
+        "table"    => Table,
+        "incident" => Incident
+      }.freeze
 
       def run_async!(resource, params, secrets, context)
         raise ArgumentError, "Invalid resource" unless resource&.start_with?(SCHEME_PREFIX)
