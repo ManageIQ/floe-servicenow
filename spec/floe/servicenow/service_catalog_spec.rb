@@ -525,11 +525,11 @@ RSpec.describe Floe::ServiceNow::ServiceCatalog do
     end
 
     it "returns error for missing username" do
-      expect(described_class.send(:verify_credentials, {"password" => "pass"})).to eq("Missing Credential: username")
+      expect(described_class.send(:verify_credentials, {"password" => "pass"})).to eq("Missing Credentials: Provide either (username and password) or access_token")
     end
 
     it "returns error for missing password" do
-      expect(described_class.send(:verify_credentials, {"username" => "user"})).to eq("Missing Credential: password")
+      expect(described_class.send(:verify_credentials, {"username" => "user"})).to eq("Missing Credentials: Provide either (username and password) or access_token")
     end
   end
 

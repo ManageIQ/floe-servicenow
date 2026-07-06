@@ -1,8 +1,8 @@
 {
-  "Comment": "Example of getting an access token with a client_id/secret/refresh_token",
-  "StartAt": "OauthRefreshToken",
+  "Comment": "Example of OAuth refresh token grant flow followed by authenticated API call",
+  "StartAt": "OauthToken",
   "States": {
-    "OauthRefreshToken": {
+    "OauthToken": {
       "Type": "Task",
       "Resource": "servicenow://oauth/token",
       "Credentials": {
@@ -16,6 +16,19 @@
         "scope": "useraccount"
       },
       "ResultPath": "$$.Credentials.oauth_token",
+      "Next": "GetCIClasses"
+    },
+    "GetCIClasses": {
+      "Type": "Task",
+      "Resource": "servicenow://cmdb/get_ci_classes",
+      "Credentials": {
+        "access_token.$": "$$.Credentials.oauth_token.access_token"
+      },
+      "Parameters": {
+        "instance_id.$": "$.instance_id",
+        "limit": 5
+      },
+      "ResultPath": "$.ci_classes",
       "End": true
     }
   }

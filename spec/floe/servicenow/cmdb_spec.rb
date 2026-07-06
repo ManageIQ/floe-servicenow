@@ -64,7 +64,7 @@ RSpec.describe Floe::ServiceNow::Cmdb do
 
         expect(result["success"]).to be false
         expect(result["output"]["Error"]).to eq("States.TaskFailed")
-        expect(result["output"]["Cause"]).to eq("Missing Credential: username")
+        expect(result["output"]["Cause"]).to eq("Missing Credentials: Provide either (username and password) or access_token")
       end
     end
   end
