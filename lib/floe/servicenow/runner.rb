@@ -9,6 +9,7 @@ module Floe
         "cmdb"            => Cmdb,
         "table"           => Table,
         "incident"        => Incident,
+        "oauth"           => Oauth,
         "service_catalog" => ServiceCatalog
       }.freeze
 
