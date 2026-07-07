@@ -25,6 +25,7 @@ gem install floe-servicenow
 ## Features
 - **ServiceNow CMDB API**: Manage Configuration Items and relationships
 - **ServiceNow Incident API**: Create, update, resolve, and query incidents
+- **ServiceNow OAuth API**: Authenticate and get an API token
 - **ServiceNow Service Catalog API**: Browse catalogs, manage cart, and submit orders
 - **ServiceNow Table API**: Manage ServiceNow Tables
 
@@ -77,6 +78,7 @@ Complete workflow examples demonstrating API usage can be found in the `examples
 
 - **`examples/cmdb.asl`** - Demonstrates CMDB API operations including CI management and relationships
 - **`examples/incident.asl`** - Demonstrates Incident API operations (create, resolve, close)
+- **`examples/oauth.asl`** - Demonstrates OAuth authentication with both password and refresh_token grant types
 - **`examples/service_catalog.asl`** - Demonstrates Service Catalog API operations (browse catalogs, order items, track requests)
 - **`examples/table.asl`** - Demonstrates all Table API CRUD operations in a single workflow
 
@@ -172,9 +174,8 @@ After obtaining an access token, use it in subsequent API calls:
 }
 ```
 
-**Complete Workflow Examples**:
-- `examples/oauth-password.asl` - Password grant flow with authenticated API call
-- `examples/oauth-refresh_token.asl` - Refresh token flow with authenticated API call
+**Complete Workflow Example**:
+- `examples/oauth.asl` - Combined OAuth flow supporting both password and refresh_token grant types with authenticated API call
 
 #### Table API Methods
 

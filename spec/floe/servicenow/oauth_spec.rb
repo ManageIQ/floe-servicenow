@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Floe::ServiceNow::Oauth do
+RSpec.describe Floe::ServiceNow::OAuth do
   let(:secrets) { {} }
   let(:context) { double("context") }
 

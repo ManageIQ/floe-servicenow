@@ -4,7 +4,7 @@ require "json"
 
 module Floe
   module ServiceNow
-    class Oauth < Floe::ServiceNow::Methods
+    class OAuth < Floe::ServiceNow::Methods
       def self.token(params, secrets, context)
         error = verify_instance_id(params)
         return ServiceNow.error!({}, :cause => error) if error
