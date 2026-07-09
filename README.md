@@ -25,15 +25,17 @@ gem install floe-servicenow
 ## Features
 - **ServiceNow CMDB API**: Manage Configuration Items and relationships
 - **ServiceNow Incident API**: Create, update, resolve, and query incidents
+- **ServiceNow OAuth API**: Authenticate and get an API token
 - **ServiceNow Service Catalog API**: Browse catalogs, manage cart, and submit orders
 - **ServiceNow Table API**: Manage ServiceNow Tables
 
 ## Configuration
 
-### Secrets
+### Authentication
 
-ServiceNow operations require authentication credentials passed via the `secrets` parameter:
+ServiceNow operations support two authentication methods:
 
+#### Basic Authentication
 ```json
 {
   "username": "your-username",
@@ -41,7 +43,21 @@ ServiceNow operations require authentication credentials passed via the `secrets
 }
 ```
 
+#### OAuth Bearer Token
+```json
+{
+  "access_token": "your-oauth-access-token",
+  "client_id": "your-client-id",
+  "client_secret": "your-client-secret",
+  "refresh_token": "your-refresh-token"
+}
+```
+
 **Security Note**: Never hardcode credentials in your workflow definitions. Use Floe's secrets management features.
+
+### OAuth Token Acquisition
+
+Use the `servicenow://oauth/token` endpoint to obtain OAuth access tokens. See the [OAuth API Methods](#oauth-api-methods) section for details.
 
 ## Usage
 
@@ -62,10 +78,104 @@ Complete workflow examples demonstrating API usage can be found in the `examples
 
 - **`examples/cmdb.asl`** - Demonstrates CMDB API operations including CI management and relationships
 - **`examples/incident.asl`** - Demonstrates Incident API operations (create, resolve, close)
+- **`examples/oauth.asl`** - Demonstrates OAuth authentication with both password and refresh_token grant types
 - **`examples/service_catalog.asl`** - Demonstrates Service Catalog API operations (browse catalogs, order items, track requests)
 - **`examples/table.asl`** - Demonstrates all Table API CRUD operations in a single workflow
 
 ### Available Methods
+
+#### OAuth API Methods
+
+##### 1. Get OAuth Token
+
+Obtain an OAuth access token using various grant types.
+
+**Resource**: `servicenow://oauth/token`
+
+**Required Parameters**:
+- `instance_id` (string): ServiceNow instance identifier
+- `grant_type` (string): OAuth grant type ("password" or "refresh_token")
+- `client_id` (string): OAuth client ID
+
+**Required Credentials** (varies by grant type):
+
+**Password Grant**:
+- `client_secret` (string): OAuth client secret
+- `username` (string): ServiceNow username
+- `password` (string): ServiceNow password
+
+**Refresh Token Grant**:
+- `client_secret` (string): OAuth client secret
+- `refresh_token` (string): Valid refresh token
+
+**Example - Password Grant**:
+
+```json
+{
+  "Resource": "servicenow://oauth/token",
+  "Credentials": {
+    "client_secret.$": "$$.Credentials.client_secret",
+    "username.$": "$$.Credentials.username",
+    "password.$": "$$.Credentials.password"
+  },
+  "Parameters": {
+    "instance_id": "dev12345",
+    "client_id": "your-client-id",
+    "grant_type": "password"
+  },
+  "ResultPath": "$$.Credentials.oauth_token"
+}
+```
+
+**Example - Refresh Token Grant**:
+
+```json
+{
+  "Resource": "servicenow://oauth/token",
+  "Credentials": {
+    "client_secret.$": "$$.Credentials.client_secret",
+    "refresh_token.$": "$$.Credentials.refresh_token"
+  },
+  "Parameters": {
+    "instance_id": "dev12345",
+    "client_id": "your-client-id",
+    "grant_type": "refresh_token"
+  },
+  "ResultPath": "$$.Credentials.oauth_token"
+}
+```
+
+**Response**:
+
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refresh_token": "refresh_token_value",
+  "scope": "useraccount",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+```
+
+**Using the Access Token**:
+
+After obtaining an access token, use it in subsequent API calls:
+
+```json
+{
+  "Resource": "servicenow://cmdb/get_ci_classes",
+  "Credentials": {
+    "access_token.$": "$$.Credentials.oauth_token.access_token"
+  },
+  "Parameters": {
+    "instance_id": "dev12345",
+    "limit": 5
+  }
+}
+```
+
+**Complete Workflow Example**:
+- `examples/oauth.asl` - Combined OAuth flow supporting both password and refresh_token grant types with authenticated API call
 
 #### Table API Methods
 
