@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "ServiceNow API Integration for Floe"
   spec.homepage = "https://github.com/ManageIQ/floe-servicenow"
   spec.licenses = ["Apache-2.0"]
-  spec.required_ruby_version = ">= 3.0.0"
+  spec.required_ruby_version = ">= 3.2.0"
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
   spec.metadata['rubygems_mfa_required'] = "true"
